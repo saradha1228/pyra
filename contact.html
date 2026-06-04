@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - PYRA Foundation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="logo">
+      <a href="index.html">
+        <img src="images/cropped-pyra.png" alt="PYRA Foundation Logo">
+      </a>
+    </div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About us</a>
+      <a href="services.html">Our Services</a>
+      <a href="events.html">Certificate &amp; Events</a>
+      <a href="contact.html" class="active">Contact us</a>
+      <a href="donate.html" class="btn-donate">Donate</a>
+    </nav>
+  </header>
+
+  <!-- PAGE BANNER -->
+  <section class="page-banner">
+    <div class="banner-shape shape-purple"></div>
+    <div class="banner-shape shape-teal"></div>
+    <div class="banner-shape shape-yellow"></div>
+    <h1 class="banner-title">Contact us</h1>
+  </section>
+
+  <!-- CONTACT LAYOUT -->
+  <div class="contact-layout">
+
+    <!-- LEFT: Contact Information -->
+    <div class="contact-info">
+      <h2>Contact Information</h2>
+
+      <div class="contact-info-item">
+        <div class="contact-icon-wrap">
+          <i class="fas fa-envelope"></i>
+        </div>
+        <div>
+          <h4>Gmail</h4>
+          <p>pyrapondy@gmail.com</p>
+        </div>
+      </div>
+
+      <div class="contact-info-item">
+        <div class="contact-icon-wrap">
+          <i class="fas fa-phone"></i>
+        </div>
+        <div>
+          <h4>Let's Talk</h4>
+          <p>+91 9363312271</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Contact Form -->
+    <div class="contact-form-box">
+      <p class="form-tag">GET IN TOUCH</p>
+      <h3 class="form-headline">Send A Message</h3>
+      <p class="form-note">Fields marked with an * are required</p>
+
+      <form id="contactForm" onsubmit="submitContactForm(event)">
+        <input type="text"  id="cName"    class="form-input" placeholder="Name *"    required>
+        <input type="email" id="cEmail"   class="form-input" placeholder="Email *"   required>
+        <input type="tel"   id="cPhone"   class="form-input" placeholder="Phone">
+        <textarea           id="cMessage" class="form-input" placeholder="Message *" required></textarea>
+
+        <div class="captcha-mock">
+          <input type="checkbox" id="notRobot">
+          <label for="notRobot">I'm not a robot</label>
+          <div class="captcha-logo">
+            <span>reCAPTCHA</span>
+            Privacy - Terms
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary">Submit</button>
+      </form>
+      <div id="contactSuccess" style="display:none; margin-top:16px; color:green; font-weight:600;">
+        Message sent! Thank you for contacting us.
+      </div>
+
+      <script>
+      function submitContactForm(e) {
+        e.preventDefault();
+        var name    = document.getElementById('cName').value;
+        var email   = document.getElementById('cEmail').value;
+        var phone   = document.getElementById('cPhone').value;
+        var message = document.getElementById('cMessage').value;
+        var body    = 'Name: ' + name + '\nEmail: ' + email + '\nPhone: ' + phone + '\nMessage: ' + message;
+        var subject = 'PYRA Foundation Contact - ' + name;
+        window.location.href = 'mailto:pyrapondy@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
+        document.getElementById('contactSuccess').style.display = 'block';
+        document.getElementById('contactForm').reset();
+      }
+      </script>
+    </div>
+
+  </div>
+
+  <!-- BOARD OF TRUSTEES -->
+  <section class="trustees-section">
+    <h2 class="trustees-title">BOARD OF TRUSTEES</h2>
+    <div class="trustees-underline"></div>
+    <div class="trustees-row">
+      <div class="trustee-card">
+        <img src="images/20230122_155401_4-1.jpg" alt="Mrs. Ageela Ayappasamy">
+        <h4>Mrs. Ageela Ayappasamy</h4>
+        <p>Founder and Managing Trustee</p>
+      </div>
+      <div class="trustee-card">
+        <img src="images/image3.jpg" alt="Mr. R. Ayappasamy">
+        <h4>Mr. R. Ayappasamy</h4>
+        <p>Managing Director</p>
+      </div>
+      <div class="trustee-card">
+        <img src="images/image2.jpg" alt="Mr. Perumal">
+        <h4>Mr. Perumal</h4>
+        <p>Trustee</p>
+      </div>
+      <div class="trustee-card">
+        <img src="images/IMG-20221021-WA0012.jpg" alt="Mr. Leonard">
+        <h4>Mr. Leonard</h4>
+        <p>Research Associate of ISBR business school Bangalore<br>Trustee</p>
+      </div>
+      <div class="trustee-card">
+        <img src="images/image1.jpg" alt="Dr. Jayanth CA">
+        <h4>Dr. Jayanth CA</h4>
+        <p>Assistant Professor at OP Jindal Global University<br>Trustee</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DONATE NOW -->
+  <section class="donate-section" id="donate">
+    <h2>Donate Now</h2>
+    <div class="donate-underline"></div>
+    <p>No one has ever become poor from giving.</p>
+    <a href="donate.html" class="btn-primary">Donate Now</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-logo">
+        <img src="images/pyra-removebg-preview.png" alt="PYRA Foundation">
+      </div>
+      <div class="footer-links">
+        <h3>Quick Links</h3>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="services.html">Our Services</a></li>
+          <li><a href="events.html">Certificates &amp; Events</a></li>
+          <li><a href="contact.html">Contact us</a></li>
+        </ul>
+      </div>
+      <div class="footer-contact-col">
+        <h3>Contact Information</h3>
+        <div class="footer-contact-item">
+          <i class="fas fa-phone"></i>
+          <span>+91 9363312271</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fas fa-envelope"></i>
+          <span>pyrapondy@gmail.com</span>
+        </div>
+        <div class="footer-contact-item">
+          <i class="fas fa-map-marker-alt"></i>
+          <span>42, Chellapermal Street, Kuyavarpalayam, (Kosapalayam), Puducherry- 605 013</span>
+        </div>
+        <div class="stay-connected">
+          <p>STAY CONNECTED</p>
+          <div class="social-icons">
+            <a href="https://www.facebook.com/pyrapondy?mibextid=ZbWKwLb" class="social-icon fb" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="https://www.instagram.com/pyrapondy" class="social-icon ig" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      Copyright &copy; 2024 Pyra Foundation. All rights reserved.
+    </div>
+  </footer>
+
+</body>
+</html>

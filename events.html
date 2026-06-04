@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Certificate &amp; Events - PYRA Foundation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;0,700;0,800;1,400;1,600;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .reports-manager{padding:40px 10%}
+    .reports-header{display:flex;align-items:center;gap:14px;margin-bottom:28px}
+    .reports-header h2{color:var(--red);font-size:24px;font-weight:700}
+    .btn-new-folder{background:var(--navy);color:#fff;border:none;padding:9px 18px;border-radius:4px;cursor:pointer;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px}
+    .btn-new-folder:hover{background:#152050}
+    .fm-layout{display:grid;grid-template-columns:250px 1fr;border:1px solid #ddd;border-radius:8px;min-height:440px;overflow:hidden}
+    .fm-sidebar{background:#f5f6fa;border-right:1px solid #ddd;padding:14px 0}
+    .fm-sidebar-title{font-size:11px;color:#999;font-weight:700;letter-spacing:1px;padding:0 16px 10px;text-transform:uppercase}
+    .folder-item{display:flex;align-items:center;gap:8px;padding:9px 12px 9px 16px;cursor:pointer;font-size:14px;color:#444;border-left:3px solid transparent;transition:background .15s}
+    .folder-item:hover{background:#e8ecf7}
+    .folder-item.active{background:#e8ecf7;border-left-color:var(--navy);color:var(--navy);font-weight:600}
+    .folder-item i.fa-folder{color:#f0a500;font-size:16px;flex-shrink:0}
+    .folder-item.active i.fa-folder{color:var(--navy)}
+    .folder-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .del-folder-btn{background:none;border:none;color:#ccc;cursor:pointer;padding:2px 6px;font-size:15px;border-radius:3px;line-height:1;flex-shrink:0}
+    .del-folder-btn:hover{color:#e74c3c;background:#fde}
+    .no-folders{padding:20px 16px;font-size:13px;color:#aaa}
+    .fm-main{padding:20px;background:#fff}
+    .fm-main-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid #eee}
+    .fm-main-header h3{font-size:16px;color:#333;font-weight:600}
+    .btn-upload{background:var(--red);color:#fff;border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px}
+    .btn-upload:hover{background:#a82830}
+    .files-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:14px}
+    .file-card{position:relative;border:1px solid #e0e0e0;border-radius:6px;padding:16px 10px 12px;text-align:center;cursor:pointer;transition:box-shadow .2s,border-color .2s}
+    .file-card:hover{box-shadow:0 3px 10px rgba(0,0,0,.1);border-color:var(--navy)}
+    .del-file-btn{position:absolute;top:4px;right:4px;background:rgba(200,0,0,.08);border:none;color:#ccc;cursor:pointer;width:20px;height:20px;border-radius:3px;font-size:14px;line-height:1;display:flex;align-items:center;justify-content:center}
+    .del-file-btn:hover{background:#fde;color:#e74c3c}
+    .file-icon{font-size:34px;margin-bottom:8px}
+    .file-icon.img-i{color:#2ecc71}.file-icon.pdf-i{color:#e74c3c}.file-icon.doc-i{color:#3498db}.file-icon.other-i{color:#95a5a6}
+    .file-card span{font-size:11px;color:#555;word-break:break-all;line-height:1.4;display:block}
+    .empty-folder{padding:50px 20px;text-align:center;color:#bbb;font-size:14px}
+    .empty-folder i{font-size:48px;display:block;margin-bottom:12px;color:#ddd}
+    .fm-placeholder{display:flex;align-items:center;justify-content:center;height:100%;color:#bbb;font-size:14px;text-align:center;padding:40px}
+    .fm-placeholder i{font-size:52px;display:block;margin-bottom:14px;color:#e0e0e0}
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2000;align-items:center;justify-content:center}
+    .modal-overlay.open{display:flex}
+    .modal-box{background:#fff;border-radius:10px;padding:28px 32px;min-width:360px;max-width:480px;width:90%}
+    .modal-box h3{color:var(--navy);font-size:18px;margin-bottom:16px}
+    .modal-input{width:100%;padding:10px 14px;border:1px solid #ccc;border-radius:4px;font-size:14px;font-family:inherit;outline:none;margin-bottom:16px}
+    .modal-input:focus{border-color:var(--navy)}
+    .modal-btns{display:flex;gap:10px;justify-content:flex-end}
+    .btn-cancel{background:#f0f0f0;color:#555;border:none;padding:9px 18px;border-radius:4px;cursor:pointer;font-size:14px}
+    .btn-confirm{background:var(--navy);color:#fff;border:none;padding:9px 18px;border-radius:4px;cursor:pointer;font-size:14px;font-weight:600}
+    .viewer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:3000;flex-direction:column;align-items:center;justify-content:center}
+    .viewer-overlay.open{display:flex}
+    .viewer-top{width:100%;max-width:960px;display:flex;align-items:center;justify-content:space-between;padding:10px 20px;color:#fff}
+    .viewer-top span{font-size:14px;opacity:.8}
+    .viewer-close{background:none;border:none;color:#fff;font-size:28px;cursor:pointer;line-height:1}
+    .viewer-content{flex:1;display:flex;align-items:center;justify-content:center;width:100%;max-width:960px;padding:0 20px}
+    .viewer-content img{max-width:100%;max-height:72vh;border-radius:4px}
+    .viewer-content embed{width:100%;height:72vh;border-radius:4px}
+    .viewer-no-preview{color:#ccc;text-align:center}
+    .viewer-no-preview i{font-size:60px;display:block;margin-bottom:14px}
+    .viewer-no-preview a{color:#7ab4ff;text-decoration:underline}
+    .viewer-nav{display:flex;align-items:center;gap:28px;padding:16px;color:#fff}
+    .viewer-nav button{background:rgba(255,255,255,.15);border:none;color:#fff;padding:10px 22px;border-radius:4px;cursor:pointer;font-size:14px}
+    .viewer-nav button:hover{background:rgba(255,255,255,.3)}
+    .viewer-nav button:disabled{opacity:.3;cursor:not-allowed}
+    .viewer-counter{font-size:14px;opacity:.7}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"><a href="index.html"><img src="images/cropped-pyra.png" alt="PYRA Foundation Logo"></a></div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About us</a>
+      <a href="services.html">Our Services</a>
+      <a href="events.html" class="active">Certificate &amp; Events</a>
+      <a href="contact.html">Contact us</a>
+      <a href="donate.html" class="btn-donate">Donate</a>
+    </nav>
+  </header>
+
+  <section class="page-banner">
+    <div class="banner-shape shape-purple"></div>
+    <div class="banner-shape shape-teal"></div>
+    <div class="banner-shape shape-yellow"></div>
+    <h1 class="banner-title">Certificate &amp; Events</h1>
+  </section>
+
+  <section class="reports-manager">
+    <div class="reports-header">
+      <i class="far fa-folder-open" style="font-size:28px;color:var(--red)"></i>
+      <h2>Reports</h2>
+      <button class="btn-new-folder" onclick="openFolderModal()"><i class="fas fa-folder-plus"></i> New Folder</button>
+    </div>
+    <div class="fm-layout">
+      <div class="fm-sidebar">
+        <div class="fm-sidebar-title">Folders</div>
+        <div id="folderList"><p class="no-folders">No folders yet</p></div>
+      </div>
+      <div class="fm-main" id="fmMain">
+        <div class="fm-placeholder"><div><i class="fas fa-folder-open"></i>Select a folder or create a new one to get started.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="trustees-section">
+    <h2 class="trustees-title">BOARD OF TRUSTEES</h2>
+    <div class="trustees-underline"></div>
+    <div class="trustees-row">
+      <div class="trustee-card"><img src="images/20230122_155401_4-1.jpg" alt="Mrs. Ageela Ayappasamy"><h4>Mrs. Ageela Ayappasamy</h4><p>Founder and Managing Trustee</p></div>
+      <div class="trustee-card"><img src="images/image3.jpg" alt="Mr. R. Ayappasamy"><h4>Mr. R. Ayappasamy</h4><p>Managing Director</p></div>
+      <div class="trustee-card"><img src="images/image2.jpg" alt="Mr. Perumal"><h4>Mr. Perumal</h4><p>Trustee</p></div>
+      <div class="trustee-card"><img src="images/IMG-20221021-WA0012.jpg" alt="Mr. Leonard"><h4>Mr. Leonard</h4><p>Research Associate of ISBR business school Bangalore<br>Trustee</p></div>
+      <div class="trustee-card"><img src="images/image1.jpg" alt="Dr. Jayanth CA"><h4>Dr. Jayanth CA</h4><p>Assistant Professor at OP Jindal Global University<br>Trustee</p></div>
+    </div>
+  </section>
+
+  <section class="donate-section">
+    <h2>Donate Now</h2><div class="donate-underline"></div>
+    <p>No one has ever become poor from giving.</p>
+    <a href="donate.html" class="btn-primary">Donate Now</a>
+  </section>
+
+  <footer>
+    <div class="footer-grid">
+      <div class="footer-logo"><img src="images/pyra-removebg-preview.png" alt="PYRA Foundation"></div>
+      <div class="footer-links"><h3>Quick Links</h3><ul><li><a href="index.html">Home</a></li><li><a href="about.html">About</a></li><li><a href="services.html">Our Services</a></li><li><a href="events.html">Certificates &amp; Events</a></li><li><a href="contact.html">Contact us</a></li></ul></div>
+      <div class="footer-contact-col">
+        <h3>Contact Information</h3>
+        <div class="footer-contact-item"><i class="fas fa-phone"></i><span>+91 9363312271</span></div>
+        <div class="footer-contact-item"><i class="fas fa-envelope"></i><span>pyrapondy@gmail.com</span></div>
+        <div class="footer-contact-item"><i class="fas fa-map-marker-alt"></i><span>42, Chellapermal Street, Kuyavarpalayam, (Kosapalayam), Puducherry- 605 013</span></div>
+        <div class="stay-connected"><p>STAY CONNECTED</p><div class="social-icons"><a href="https://www.facebook.com/pyrapondy?mibextid=ZbWKwLb" class="social-icon fb"><i class="fab fa-facebook-f"></i></a><a href="https://www.instagram.com/pyrapondy" class="social-icon ig"><i class="fab fa-instagram"></i></a></div></div>
+      </div>
+    </div>
+    <div class="footer-bottom">Copyright &copy; 2024 Pyra Foundation. All rights reserved.</div>
+  </footer>
+
+  <!-- NEW FOLDER MODAL -->
+  <div class="modal-overlay" id="folderModal">
+    <div class="modal-box">
+      <h3><i class="fas fa-folder-plus"></i> &nbsp;Create New Folder</h3>
+      <input type="text" class="modal-input" id="folderNameInput" placeholder="Enter folder name" maxlength="60">
+      <div class="modal-btns">
+        <button class="btn-cancel" onclick="closeFolderModal()">Cancel</button>
+        <button class="btn-confirm" onclick="createFolder()">Create</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- FILE VIEWER -->
+  <div class="viewer-overlay" id="fileViewer">
+    <div class="viewer-top">
+      <span id="viewerFileName"></span>
+      <button class="viewer-close" onclick="closeViewer()">&times;</button>
+    </div>
+    <div class="viewer-content" id="viewerContent"></div>
+    <div class="viewer-nav">
+      <button id="prevBtn" onclick="navigateViewer(-1)"><i class="fas fa-chevron-left"></i> Prev</button>
+      <span class="viewer-counter" id="viewerCounter"></span>
+      <button id="nextBtn" onclick="navigateViewer(1)">Next <i class="fas fa-chevron-right"></i></button>
+    </div>
+  </div>
+
+  <script>
+  const DB_NAME='PyraReportsDB',DB_VER=1;
+  let db,activeFolderId=null,currentFiles=[],viewerIdx=0,activeFolderName='';
+
+  function initDB(){
+    const r=indexedDB.open(DB_NAME,DB_VER);
+    r.onupgradeneeded=e=>{
+      const d=e.target.result;
+      if(!d.objectStoreNames.contains('folders'))d.createObjectStore('folders',{keyPath:'id',autoIncrement:true});
+      if(!d.objectStoreNames.contains('files')){const s=d.createObjectStore('files',{keyPath:'id',autoIncrement:true});s.createIndex('folderId','folderId');}
+    };
+    r.onsuccess=e=>{db=e.target.result;loadFolders();};
+  }
+
+  function loadFolders(){
+    db.transaction('folders','readonly').objectStore('folders').getAll().onsuccess=e=>renderFolders(e.target.result);
+  }
+
+  function renderFolders(folders){
+    const el=document.getElementById('folderList');
+    if(!folders.length){el.innerHTML='<p class="no-folders">No folders yet</p>';return;}
+    el.innerHTML=folders.map(f=>
+      `<div class="folder-item${f.id===activeFolderId?' active':''}" onclick="selectFolder(${f.id},'${esc(f.name)}')">
+        <i class="fas fa-folder"></i>
+        <span class="folder-name">${esc(f.name)}</span>
+        <button class="del-folder-btn" title="Delete folder" onclick="deleteFolder(${f.id},'${esc(f.name)}',event)">&times;</button>
+      </div>`
+    ).join('');
+  }
+
+  function selectFolder(id,name){
+    activeFolderId=id;activeFolderName=name;
+    loadFolders();
+    db.transaction('files','readonly').objectStore('files').index('folderId').getAll(id).onsuccess=e=>renderFiles(e.target.result,name,id);
+  }
+
+  function renderFiles(files,folderName,folderId){
+    currentFiles=files;
+    document.getElementById('fmMain').innerHTML=
+      `<div class="fm-main-header">
+        <h3><i class="fas fa-folder-open" style="color:#f0a500;margin-right:8px"></i>${esc(folderName)}</h3>
+        <label class="btn-upload"><i class="fas fa-upload"></i> Upload File<input type="file" multiple style="display:none" onchange="uploadFiles(event,${folderId})"></label>
+      </div>`+
+      (files.length
+        ?`<div class="files-grid">${files.map((f,i)=>
+            `<div class="file-card" onclick="openViewer(${i})">
+              <button class="del-file-btn" title="Delete file" onclick="deleteFile(${f.id},event)">&times;</button>
+              <div class="file-icon ${fIco(f.type)}">${fIcoHtml(f.type)}</div>
+              <span>${esc(f.name)}</span>
+            </div>`).join('')}</div>`
+        :`<div class="empty-folder"><i class="fas fa-file-upload"></i>No files yet. Click "Upload File" to add files.</div>`);
+  }
+
+  function fIco(t){if(t.startsWith('image/'))return'img-i';if(t==='application/pdf')return'pdf-i';if(t.includes('word'))return'doc-i';return'other-i';}
+  function fIcoHtml(t){if(t.startsWith('image/'))return'<i class="fas fa-file-image"></i>';if(t==='application/pdf')return'<i class="fas fa-file-pdf"></i>';if(t.includes('word'))return'<i class="fas fa-file-word"></i>';return'<i class="fas fa-file"></i>';}
+
+  function uploadFiles(event,folderId){
+    Array.from(event.target.files).forEach(file=>{
+      const r=new FileReader();
+      r.onload=e=>{
+        const tx=db.transaction('files','readwrite');
+        tx.objectStore('files').add({folderId,name:file.name,type:file.type,size:file.size,data:e.target.result});
+        tx.oncomplete=()=>selectFolder(folderId,activeFolderName);
+      };
+      r.readAsDataURL(file);
+    });
+  }
+
+  /* ===== DELETE FILE ===== */
+  function deleteFile(id,e){
+    e.stopPropagation();
+    if(!confirm('Delete this file?'))return;
+    const tx=db.transaction('files','readwrite');
+    tx.objectStore('files').delete(id);
+    tx.oncomplete=()=>selectFolder(activeFolderId,activeFolderName);
+  }
+
+  /* ===== DELETE FOLDER ===== */
+  function deleteFolder(id,name,e){
+    e.stopPropagation();
+    if(!confirm('Delete folder "'+name+'" and all its files? This cannot be undone.'))return;
+    const tx=db.transaction(['folders','files'],'readwrite');
+    const filesStore=tx.objectStore('files');
+    const idx=filesStore.index('folderId');
+    idx.openCursor(IDBKeyRange.only(id)).onsuccess=function(ev){
+      const cursor=ev.target.result;
+      if(cursor){cursor.delete();cursor.continue();}
+    };
+    tx.objectStore('folders').delete(id);
+    tx.oncomplete=()=>{
+      if(activeFolderId===id){
+        activeFolderId=null;activeFolderName='';
+        document.getElementById('fmMain').innerHTML='<div class="fm-placeholder"><div><i class="fas fa-folder-open"></i>Select a folder or create a new one to get started.</div></div>';
+      }
+      loadFolders();
+    };
+  }
+
+  /* ===== FOLDER MODAL ===== */
+  function openFolderModal(){document.getElementById('folderModal').classList.add('open');document.getElementById('folderNameInput').value='';setTimeout(()=>document.getElementById('folderNameInput').focus(),80);}
+  function closeFolderModal(){document.getElementById('folderModal').classList.remove('open');}
+  document.getElementById('folderNameInput').addEventListener('keydown',e=>{if(e.key==='Enter')createFolder();if(e.key==='Escape')closeFolderModal();});
+  document.getElementById('folderModal').addEventListener('click',e=>{if(e.target===document.getElementById('folderModal'))closeFolderModal();});
+
+  function createFolder(){
+    const name=document.getElementById('folderNameInput').value.trim();
+    if(!name)return;
+    db.transaction('folders','readwrite').objectStore('folders').add({name,createdAt:new Date().toISOString()}).onsuccess=()=>{closeFolderModal();loadFolders();};
+  }
+
+  /* ===== FILE VIEWER ===== */
+  function openViewer(idx){viewerIdx=idx;showViewerFile();document.getElementById('fileViewer').classList.add('open');}
+  function closeViewer(){document.getElementById('fileViewer').classList.remove('open');document.getElementById('viewerContent').innerHTML='';}
+  function navigateViewer(dir){viewerIdx=Math.max(0,Math.min(currentFiles.length-1,viewerIdx+dir));showViewerFile();}
+  document.getElementById('fileViewer').addEventListener('click',e=>{if(e.target===document.getElementById('fileViewer'))closeViewer();});
+
+  function showViewerFile(){
+    const f=currentFiles[viewerIdx];
+    document.getElementById('viewerFileName').textContent=f.name;
+    document.getElementById('viewerCounter').textContent=(viewerIdx+1)+' / '+currentFiles.length;
+    document.getElementById('prevBtn').disabled=viewerIdx===0;
+    document.getElementById('nextBtn').disabled=viewerIdx===currentFiles.length-1;
+    const c=document.getElementById('viewerContent');
+    if(f.type.startsWith('image/'))c.innerHTML=`<img src="${f.data}" alt="${esc(f.name)}">`;
+    else if(f.type==='application/pdf')c.innerHTML=`<embed src="${f.data}" type="application/pdf">`;
+    else c.innerHTML=`<div class="viewer-no-preview"><i class="fas fa-file"></i><p>Preview not available for this file type.</p><a href="${f.data}" download="${esc(f.name)}">Download ${esc(f.name)}</a></div>`;
+  }
+
+  function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+  initDB();
+  </script>
+</body>
+</html>
