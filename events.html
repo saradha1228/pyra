@@ -9,30 +9,58 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="css/style.css">
   <style>
-    .reports-manager{padding:40px 10%}
-    .reports-header{display:flex;align-items:center;gap:14px;margin-bottom:28px}
-    .reports-header h2{color:var(--red);font-size:24px;font-weight:700}
-    .fm-layout{display:grid;grid-template-columns:250px 1fr;border:1px solid #ddd;border-radius:8px;min-height:420px;overflow:hidden}
-    .fm-sidebar{background:#f5f6fa;border-right:1px solid #ddd;padding:14px 0}
-    .fm-sidebar-title{font-size:11px;color:#999;font-weight:700;letter-spacing:1px;padding:0 16px 12px;text-transform:uppercase}
-    .folder-item{display:flex;align-items:center;gap:9px;padding:11px 16px;cursor:pointer;font-size:14px;color:#444;border-left:3px solid transparent;transition:background .15s}
-    .folder-item:hover{background:#e8ecf7}
-    .folder-item.active{background:#e8ecf7;border-left-color:var(--navy);color:var(--navy);font-weight:600}
-    .folder-item i{color:#f0a500;font-size:16px;flex-shrink:0}
-    .folder-item.active i{color:var(--navy)}
-    .no-folders{padding:24px 16px;font-size:13px;color:#aaa;text-align:center}
-    .fm-main{padding:22px;background:#fff}
-    .fm-main-title{font-size:16px;color:#333;font-weight:600;margin-bottom:18px;padding-bottom:12px;border-bottom:1px solid #eee;display:flex;align-items:center;gap:8px}
-    .files-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:14px}
-    .file-card{border:1px solid #e0e0e0;border-radius:6px;padding:18px 10px 12px;text-align:center;cursor:pointer;transition:box-shadow .2s,border-color .2s}
-    .file-card:hover{box-shadow:0 4px 12px rgba(0,0,0,.1);border-color:var(--navy)}
-    .file-icon{font-size:36px;margin-bottom:8px}
+    /* Reports icon entry */
+    .reports-entry{padding:60px 10% 50px;text-align:center}
+    .reports-icon-btn{
+      display:inline-flex;flex-direction:column;align-items:center;gap:10px;
+      cursor:pointer;border:none;background:none;padding:20px 32px;
+      border-radius:10px;transition:background .2s;
+    }
+    .reports-icon-btn:hover{background:#f5f5f5}
+    .reports-icon-btn i{font-size:62px;color:var(--red)}
+    .reports-icon-btn span{font-size:17px;font-weight:700;color:#333;letter-spacing:.5px}
+
+    /* File manager (hidden by default) */
+    .reports-manager{padding:0 10% 50px;display:none}
+    .reports-manager.open{display:block}
+    .fm-back{display:inline-flex;align-items:center;gap:7px;cursor:pointer;color:var(--navy);font-size:14px;font-weight:600;margin-bottom:22px;border:none;background:none;padding:0}
+    .fm-back:hover{text-decoration:underline}
+
+    /* Folder grid view */
+    .folders-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:20px}
+    .folder-card{
+      display:flex;flex-direction:column;align-items:center;gap:10px;
+      padding:24px 16px 18px;border:1px solid #e8e8e8;border-radius:10px;
+      cursor:pointer;transition:box-shadow .2s,border-color .2s;background:#fff;
+    }
+    .folder-card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1);border-color:var(--navy)}
+    .folder-card i{font-size:48px;color:#f0a500}
+    .folder-card span{font-size:13px;font-weight:600;color:#444;text-align:center;word-break:break-word;line-height:1.4}
+    .no-folders{padding:50px;text-align:center;color:#bbb;font-size:14px}
+    .no-folders i{font-size:48px;display:block;margin-bottom:12px;color:#e0e0e0}
+
+    /* Files list inside folder */
+    .files-section{display:none}
+    .files-section.open{display:block}
+    .folders-section{display:block}
+    .folders-section.hidden{display:none}
+
+    .files-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:16px;margin-top:8px}
+    .file-card{
+      border:1px solid #e0e0e0;border-radius:8px;padding:20px 12px 14px;
+      text-align:center;cursor:pointer;transition:box-shadow .2s,border-color .2s;background:#fff;
+    }
+    .file-card:hover{box-shadow:0 4px 14px rgba(0,0,0,.1);border-color:var(--red)}
+    .file-icon{font-size:40px;margin-bottom:8px}
     .file-icon.img-i{color:#2ecc71}.file-icon.pdf-i{color:#e74c3c}.file-icon.doc-i{color:#3498db}.file-icon.other-i{color:#95a5a6}
-    .file-card span{font-size:11.5px;color:#555;word-break:break-all;line-height:1.4;display:block}
-    .empty-folder{padding:60px 20px;text-align:center;color:#bbb;font-size:14px}
-    .empty-folder i{font-size:50px;display:block;margin-bottom:14px;color:#ddd}
-    .fm-placeholder{display:flex;align-items:center;justify-content:center;height:100%;color:#bbb;font-size:14px;text-align:center;padding:40px}
-    .fm-placeholder i{font-size:54px;display:block;margin-bottom:14px;color:#e0e0e0}
+    .file-card span{font-size:12px;color:#555;word-break:break-all;line-height:1.4;display:block}
+    .empty-files{padding:50px;text-align:center;color:#bbb;font-size:14px}
+    .empty-files i{font-size:44px;display:block;margin-bottom:12px;color:#e0e0e0}
+
+    .section-label{font-size:13px;color:#888;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:8px}
+    .section-label::after{content:'';flex:1;height:1px;background:#eee}
+
+    /* Viewer */
     .viewer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.92);z-index:3000;flex-direction:column;align-items:center;justify-content:center}
     .viewer-overlay.open{display:flex}
     .viewer-top{width:100%;max-width:960px;display:flex;align-items:center;justify-content:space-between;padding:10px 20px;color:#fff}
@@ -52,6 +80,7 @@
   </style>
 </head>
 <body>
+
   <header>
     <div class="logo"><a href="index.html"><img src="images/cropped-pyra.png" alt="PYRA Foundation Logo"></a></div>
     <nav>
@@ -71,22 +100,39 @@
     <h1 class="banner-title">Certificate &amp; Events</h1>
   </section>
 
-  <section class="reports-manager">
-    <div class="reports-header">
-      <i class="far fa-folder-open" style="font-size:28px;color:var(--red)"></i>
-      <h2>Reports</h2>
-    </div>
-    <div class="fm-layout">
-      <div class="fm-sidebar">
-        <div class="fm-sidebar-title">Folders</div>
-        <div id="folderList"><p class="no-folders"><i class="fas fa-folder" style="display:block;font-size:28px;color:#ddd;margin-bottom:8px"></i>No folders available</p></div>
-      </div>
-      <div class="fm-main" id="fmMain">
-        <div class="fm-placeholder"><div><i class="fas fa-folder-open"></i>Select a folder to view its files.</div></div>
-      </div>
-    </div>
-  </section>
+  <!-- STEP 1: Reports icon -->
+  <div class="reports-entry" id="reportsEntry">
+    <button class="reports-icon-btn" onclick="openReports()">
+      <i class="far fa-file-alt"></i>
+      <span>Reports</span>
+    </button>
+  </div>
 
+  <!-- STEP 2 & 3: File manager (shown after clicking icon) -->
+  <div class="reports-manager" id="reportsManager">
+
+    <!-- BACK button -->
+    <button class="fm-back" id="backBtn" onclick="goBack()">
+      <i class="fas fa-arrow-left"></i> Back
+    </button>
+
+    <!-- FOLDERS VIEW -->
+    <div class="folders-section" id="foldersSection">
+      <p class="section-label"><i class="fas fa-folder" style="color:#f0a500"></i> Folders</p>
+      <div class="folders-grid" id="foldersGrid">
+        <div class="no-folders"><i class="fas fa-folder-open"></i>No folders available yet.</div>
+      </div>
+    </div>
+
+    <!-- FILES VIEW (inside a folder) -->
+    <div class="files-section" id="filesSection">
+      <p class="section-label" id="folderLabel"><i class="fas fa-folder-open" style="color:#f0a500"></i> <span id="folderLabelName"></span></p>
+      <div class="files-grid" id="filesGrid"></div>
+    </div>
+
+  </div>
+
+  <!-- BOARD OF TRUSTEES -->
   <section class="trustees-section">
     <h2 class="trustees-title">BOARD OF TRUSTEES</h2>
     <div class="trustees-underline"></div>
@@ -135,9 +181,10 @@
   </div>
 
   <script>
-  const DB_NAME='PyraReportsDB',DB_VER=1;
-  let db,currentFiles=[],viewerIdx=0;
+  const DB_NAME='PyraReportsDB', DB_VER=1;
+  let db, currentFiles=[], viewerIdx=0, inFolderView=false;
 
+  /* ===== DB ===== */
   function initDB(){
     const r=indexedDB.open(DB_NAME,DB_VER);
     r.onupgradeneeded=e=>{
@@ -145,37 +192,91 @@
       if(!d.objectStoreNames.contains('folders'))d.createObjectStore('folders',{keyPath:'id',autoIncrement:true});
       if(!d.objectStoreNames.contains('files')){const s=d.createObjectStore('files',{keyPath:'id',autoIncrement:true});s.createIndex('folderId','folderId');}
     };
-    r.onsuccess=e=>{db=e.target.result;loadFolders();};
+    r.onsuccess=e=>{db=e.target.result;};
+  }
+  initDB();
+
+  /* ===== STEP 1 → STEP 2: Show folders ===== */
+  function openReports(){
+    document.getElementById('reportsEntry').style.display='none';
+    document.getElementById('reportsManager').classList.add('open');
+    document.getElementById('backBtn').onclick=closeReports;
+    inFolderView=false;
+    loadFolders();
+  }
+
+  function closeReports(){
+    document.getElementById('reportsEntry').style.display='block';
+    document.getElementById('reportsManager').classList.remove('open');
+    showFoldersSection();
   }
 
   function loadFolders(){
-    db.transaction('folders','readonly').objectStore('folders').getAll().onsuccess=e=>renderFolders(e.target.result);
+    db.transaction('folders','readonly').objectStore('folders').getAll().onsuccess=e=>{
+      const folders=e.target.result;
+      const grid=document.getElementById('foldersGrid');
+      if(!folders.length){
+        grid.innerHTML='<div class="no-folders"><i class="fas fa-folder-open"></i>No folders available yet.</div>';
+        return;
+      }
+      grid.innerHTML=folders.map(f=>
+        `<div class="folder-card" onclick="openFolder(${f.id},'${esc(f.name)}')">
+          <i class="fas fa-folder"></i>
+          <span>${esc(f.name)}</span>
+        </div>`
+      ).join('');
+    };
   }
 
-  function renderFolders(folders){
-    const el=document.getElementById('folderList');
-    if(!folders.length){el.innerHTML='<p class="no-folders"><i class="fas fa-folder" style="display:block;font-size:28px;color:#ddd;margin-bottom:8px"></i>No folders available</p>';return;}
-    el.innerHTML=folders.map(f=>`<div class="folder-item" onclick="selectFolder(${f.id},'${esc(f.name)}')"><i class="fas fa-folder"></i>${esc(f.name)}</div>`).join('');
+  /* ===== STEP 2 → STEP 3: Show files inside folder ===== */
+  function openFolder(id,name){
+    inFolderView=true;
+    document.getElementById('folderLabelName').textContent=name;
+    document.getElementById('backBtn').onclick=goBackToFolders;
+    db.transaction('files','readonly').objectStore('files').index('folderId').getAll(id).onsuccess=e=>{
+      currentFiles=e.target.result;
+      const grid=document.getElementById('filesGrid');
+      if(!currentFiles.length){
+        grid.innerHTML='<div class="empty-files"><i class="fas fa-file"></i>No files in this folder yet.</div>';
+      } else {
+        grid.innerHTML=currentFiles.map((f,i)=>
+          `<div class="file-card" onclick="openViewer(${i})">
+            <div class="file-icon ${fIco(f.type)}">${fIcoHtml(f.type)}</div>
+            <span>${esc(f.name)}</span>
+          </div>`
+        ).join('');
+      }
+      showFilesSection();
+    };
   }
 
-  function selectFolder(id,name){
-    document.querySelectorAll('.folder-item').forEach(el=>el.classList.remove('active'));
-    event.currentTarget.classList.add('active');
-    db.transaction('files','readonly').objectStore('files').index('folderId').getAll(id).onsuccess=e=>renderFiles(e.target.result,name);
+  function goBackToFolders(){
+    inFolderView=false;
+    document.getElementById('backBtn').onclick=closeReports;
+    showFoldersSection();
+    loadFolders();
   }
 
-  function renderFiles(files,folderName){
-    currentFiles=files;
-    document.getElementById('fmMain').innerHTML=
-      `<div class="fm-main-title"><i class="fas fa-folder-open" style="color:#f0a500"></i>${esc(folderName)}</div>`+
-      (files.length
-        ?`<div class="files-grid">${files.map((f,i)=>`<div class="file-card" onclick="openViewer(${i})"><div class="file-icon ${fIco(f.type)}">${fIcoHtml(f.type)}</div><span>${esc(f.name)}</span></div>`).join('')}</div>`
-        :`<div class="empty-folder"><i class="fas fa-file"></i>No files in this folder yet.</div>`);
+  function goBack(){
+    if(inFolderView) goBackToFolders();
+    else closeReports();
   }
 
+  function showFoldersSection(){
+    document.getElementById('foldersSection').classList.remove('hidden');
+    document.getElementById('filesSection').classList.remove('open');
+  }
+
+  function showFilesSection(){
+    document.getElementById('foldersSection').classList.add('hidden');
+    document.getElementById('filesSection').classList.add('open');
+  }
+
+  /* ===== FILE ICONS ===== */
   function fIco(t){if(t.startsWith('image/'))return'img-i';if(t==='application/pdf')return'pdf-i';if(t.includes('word'))return'doc-i';return'other-i';}
   function fIcoHtml(t){if(t.startsWith('image/'))return'<i class="fas fa-file-image"></i>';if(t==='application/pdf')return'<i class="fas fa-file-pdf"></i>';if(t.includes('word'))return'<i class="fas fa-file-word"></i>';return'<i class="fas fa-file"></i>';}
 
+  /* ===== VIEWER ===== */
   function openViewer(idx){viewerIdx=idx;showViewerFile();document.getElementById('fileViewer').classList.add('open');}
   function closeViewer(){document.getElementById('fileViewer').classList.remove('open');document.getElementById('viewerContent').innerHTML='';}
   function navigateViewer(dir){viewerIdx=Math.max(0,Math.min(currentFiles.length-1,viewerIdx+dir));showViewerFile();}
@@ -194,7 +295,6 @@
   }
 
   function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
-  initDB();
   </script>
 </body>
 </html>
