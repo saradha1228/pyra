@@ -146,8 +146,15 @@ nav a:hover, nav a.active { color: var(--red); }
 }
 .welcome-img img { max-width: 100%; height: auto; display: block; }
 
+.welcome-tagline {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 16px;
+}
+
 /* ===== FACILITIES (HOME) ===== */
-.facilities-section { padding: 0 10% 35px; }
+.facilities-section { padding: 10px 10% 60px; }
 
 .facilities-heading {
   text-align: center;
@@ -155,31 +162,114 @@ nav a:hover, nav a.active { color: var(--red); }
   font-size: 28px;
   font-weight: 700;
   margin-top: 10px;
-  margin-bottom: 22px;
+  margin-bottom: 40px;
 }
 
-.facilities-grid {
+.help-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 22px;
+  gap: 26px;
 }
 
-.facility-card img {
+.help-card {
+  background: #fff;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(29, 46, 110, 0.12);
+  padding-bottom: 22px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.help-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 32px rgba(29, 46, 110, 0.2);
+}
+
+.help-img { overflow: hidden; }
+
+.help-img img {
   width: 100%;
-  height: 200px;
+  height: 190px;
   object-fit: cover;
   object-position: center;
   display: block;
+  transition: transform 0.5s ease;
 }
 
-.facility-card p {
-  text-align: center;
+.help-card:hover .help-img img { transform: scale(1.07); }
+
+.help-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 18px 20px 0;
+}
+
+.help-underline {
+  width: 40px;
+  height: 3px;
+  background: var(--red);
+  margin: 9px 20px 13px;
+}
+
+.help-card p {
   font-size: 13.5px;
   color: #555;
-  margin-top: 14px;
-  padding: 0 6px;
-  line-height: 1.6;
+  line-height: 1.7;
+  margin: 0 20px;
 }
+
+/* ===== EVERY CONTRIBUTION MATTERS ===== */
+.contribution-section {
+  background: var(--navy-light);
+  padding: 55px 10%;
+  text-align: center;
+}
+
+.contribution-section h2 {
+  color: var(--red);
+  font-size: 30px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.contribution-underline {
+  width: 80px;
+  height: 3px;
+  background: var(--navy);
+  margin: 0 auto 20px;
+}
+
+.contribution-section p {
+  color: var(--navy);
+  font-size: 17px;
+  line-height: 1.8;
+  max-width: 760px;
+  margin: 0 auto 28px;
+}
+
+.contribution-buttons {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.btn-outline {
+  display: inline-block;
+  background: transparent;
+  color: var(--navy);
+  padding: 10px 22px;
+  border-radius: 4px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+  border: 2px solid var(--navy);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.btn-outline:hover { background: var(--navy); color: #fff; }
 
 /* ===== OUR SERVICES (HOME) ===== */
 .services-home-grid {
@@ -284,6 +374,28 @@ footer {
 }
 
 .footer-logo img { height: 85px; width: auto; }
+
+.footer-org {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--navy);
+  margin-top: 14px;
+  line-height: 1.5;
+}
+
+.footer-tagline {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.7;
+  margin-top: 8px;
+}
+
+.footer-motto {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--red);
+  margin-top: 8px;
+}
 
 .footer-links h3, .footer-contact-col h3 {
   color: var(--red);
@@ -404,7 +516,24 @@ footer {
 .vm-box h2 { font-size: 26px; margin-bottom: 22px; }
 
 .vm-box ul { list-style: none; padding: 0; }
-.vm-box ul li { margin-bottom: 13px; font-size: 14.5px; line-height: 1.65; }
+.vm-box ul li {
+  margin-bottom: 13px;
+  font-size: 14.5px;
+  line-height: 1.65;
+  padding-left: 20px;
+  position: relative;
+}
+.vm-box ul li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.85);
+}
+.vm-box ul li:last-child { margin-bottom: 0; }
 
 /* Our Team */
 .team-grid {
@@ -527,3 +656,202 @@ textarea.form-input { height: 130px; resize: vertical; }
 }
 
 .captcha-logo span { display: block; font-size: 12px; font-weight: 700; color: #555; }
+
+/* ===== ABOUT / TEAM SINGLE COLUMN ===== */
+.about-single-col { max-width: 900px; }
+
+.about-single-col .team-text p + p { margin-top: 14px; }
+
+/* ===== SERVICES LIST & FUTURE PLANS ===== */
+.service-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+  margin-top: 30px;
+}
+
+.service-item {
+  border: 1px solid #e3e3e3;
+  border-left: 4px solid var(--red);
+  border-radius: 6px;
+  padding: 20px 22px;
+  background: #fff;
+}
+
+.service-item h3 {
+  color: var(--navy);
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.service-item p {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.7;
+}
+
+.future-plans { padding-top: 45px; }
+
+.future-intro {
+  font-weight: 600;
+  color: #3a3a3a;
+}
+
+.goals-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 26px;
+  margin-top: 32px;
+}
+
+.goal-card {
+  background: #fff;
+  border: 1px solid #eceef5;
+  border-top: 4px solid var(--red);
+  border-radius: 12px;
+  padding: 32px 26px 28px;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(29, 46, 110, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.goal-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 14px 30px rgba(29, 46, 110, 0.16);
+}
+
+.goal-icon {
+  width: 64px;
+  height: 64px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  background: var(--navy-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.3s ease;
+}
+
+.goal-icon i {
+  font-size: 26px;
+  color: var(--navy);
+  transition: color 0.3s ease;
+}
+
+.goal-card:hover .goal-icon { background: var(--navy); }
+.goal-card:hover .goal-icon i { color: #fff; }
+
+.goal-card h3 {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.45;
+  margin-bottom: 12px;
+}
+
+.goal-card p {
+  font-size: 14px;
+  color: #555;
+  line-height: 1.75;
+}
+
+.future-note {
+  margin-top: 30px;
+  background: #fff8f8;
+  border-left: 4px solid var(--red);
+  border-radius: 6px;
+  padding: 16px 20px;
+  font-size: 14px;
+  color: #666;
+  line-height: 1.75;
+}
+
+.future-note i { color: var(--red); margin-right: 8px; }
+.future-note strong { color: var(--navy); }
+
+.inline-link { color: var(--navy); font-weight: 600; text-decoration: underline; }
+.inline-link:hover { color: var(--red); }
+
+.report-cats { grid-template-columns: repeat(4, 1fr); margin-bottom: 10px; }
+.report-cats .goal-card { padding: 26px 22px 24px; }
+.reporting-note-section { padding-top: 0; }
+
+.donate-intro { text-align: center; }
+.donate-intro .section-underline { margin-left: auto; margin-right: auto; }
+.donate-intro .services-full-text {
+  text-align: center;
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.upi-howto {
+  font-size: 12.5px;
+  color: #666;
+  line-height: 1.7;
+  margin-top: 10px;
+}
+
+.form-inline-note {
+  background: #f4f6fb;
+  border-left: 3px solid var(--navy);
+  border-radius: 4px;
+  padding: 12px 16px;
+  font-size: 13px;
+  color: #555;
+  line-height: 1.7;
+  margin: 14px 0;
+}
+.form-inline-note i { color: var(--navy); margin-right: 7px; }
+
+.contact-intro-section { padding-bottom: 0; }
+
+.form-helper {
+  font-size: 13px;
+  color: #666;
+  line-height: 1.7;
+  margin-bottom: 18px;
+}
+
+select.form-input { appearance: none; background: #fff url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23888' stroke-width='2'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e") no-repeat right 14px center/16px; cursor: pointer; }
+
+.thankyou-intro {
+  text-align: center;
+  font-size: 15px;
+  color: #555;
+  line-height: 1.8;
+  max-width: 760px;
+  margin: 0 auto 30px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .help-grid { grid-template-columns: repeat(2, 1fr); }
+  .service-list { grid-template-columns: 1fr; }
+  .goals-grid { grid-template-columns: 1fr; }
+  .report-cats { grid-template-columns: repeat(2, 1fr); }
+  .vision-mission { grid-template-columns: 1fr; }
+  .welcome-grid,
+  .services-home-grid,
+  .about-content-grid,
+  .team-grid,
+  .contact-layout { grid-template-columns: 1fr; }
+  .donate-form-inner { padding: 28px 22px; }
+  .donate-row { grid-template-columns: 1fr; }
+  .donors-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .help-grid { grid-template-columns: 1fr; }
+  .report-cats { grid-template-columns: 1fr; }
+  .contribution-buttons { flex-direction: column; align-items: center; }
+  .donors-grid { grid-template-columns: 1fr; }
+  header { flex-wrap: wrap; }
+  nav { flex-wrap: wrap; }
+  .donate-form-section,
+  .thankyou-section,
+  .section,
+  .facilities-section { padding-left: 6%; padding-right: 6%; }
+  .vision-mission { margin: 0 6%; }
+}

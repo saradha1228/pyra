@@ -64,7 +64,39 @@
     .upi-section img { width: 180px; height: auto; border: 1px solid #ddd; border-radius: 4px; }
     .upi-section p { margin-top: 10px; font-size: 13px; color: #555; font-weight: 600; }
 
-    /* Thank You Customers */
+    /* UPI citizenship notice */
+    .upi-notice {
+      text-align: left;
+      border: 1px solid #e3b7bd;
+      background: #fdf3f4;
+      border-radius: 6px;
+      padding: 16px 18px;
+      margin-bottom: 22px;
+    }
+    .upi-notice h5 {
+      color: var(--red); font-size: 15px; font-weight: 700;
+      margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.3px;
+    }
+    .upi-notice p { font-size: 13.5px; color: #444; line-height: 1.6; margin-bottom: 8px; }
+    .upi-notice p:last-child { margin-bottom: 0; }
+    .upi-notice a { color: var(--navy); font-weight: 600; }
+
+    .upi-section .upi-id-note {
+      font-size: 12.5px; color: #777; font-weight: 400;
+      max-width: 420px; margin: 6px auto 0; line-height: 1.5;
+    }
+
+    /* Donor declaration */
+    .donor-declaration {
+      display: flex; align-items: flex-start; gap: 10px;
+      margin-bottom: 18px;
+    }
+    .donor-declaration input[type="checkbox"] {
+      width: 18px; height: 18px; margin-top: 2px; flex-shrink: 0;
+    }
+    .donor-declaration label { font-size: 13.5px; color: #444; line-height: 1.55; }
+
+    /* Thank You to Our Donors */
     .thankyou-section { padding: 20px 10% 50px; }
 
     .thankyou-title {
@@ -118,7 +150,7 @@
       <a href="index.html">Home</a>
       <a href="about.html">About us</a>
       <a href="services.html">Our Services</a>
-      <a href="events.html">Certificate &amp; Events</a>
+      <a href="events.html">Impact Reports &amp; Events</a>
       <a href="contact.html">Contact us</a>
       <a href="donate.html" class="btn-donate">Donate</a>
     </nav>
@@ -132,6 +164,18 @@
     <h1 class="banner-title">Donate</h1>
   </section>
 
+  <!-- HELP A PATIENT -->
+  <section class="section donate-intro">
+    <h2 class="section-title">Help a Patient and Support a Family</h2>
+    <div class="section-underline"></div>
+    <p class="services-full-text future-intro">
+      Your contribution helps PYRA respond to the needs of patients and families facing financial hardship during medical treatment.
+    </p>
+    <p class="services-full-text">
+      Support may cover medicines, investigations, treatment-related travel and other assessed needs.
+    </p>
+  </section>
+
   <!-- DONATION FORM -->
   <section class="donate-form-section">
     <p class="form-tag">SUPPORT OUR CAUSE</p>
@@ -141,9 +185,17 @@
     <div class="donate-form-inner">
       <!-- UPI QR Code -->
       <div class="upi-section">
+        <div class="upi-notice">
+          <h5>UPI Donations &ndash; Indian Citizens Only</h5>
+          <p>PYRA accepts donations through this UPI facility only from Indian citizens donating their own funds from their own Indian bank accounts.</p>
+          <p>Foreign citizens, including OCI cardholders, must not use this UPI QR code or UPI ID to donate to PYRA.</p>
+          <p>For donation-related enquiries, contact <a href="mailto:pyrapondy@gmail.com">pyrapondy@gmail.com</a> or <a href="tel:+919363312271">+91 93633 12271</a>.</p>
+        </div>
         <h4><i class="fas fa-qrcode"></i> &nbsp;Scan &amp; Pay via UPI</h4>
         <img src="images/IMG-20221010-WA0000.jpg" alt="UPI QR Code - pyrapondy@sbi">
         <p>UPI ID: pyrapondy@sbi</p>
+        <p class="upi-id-note">Indian citizens only, donating their own funds from their own Indian bank account.</p>
+        <p class="upi-howto">Scan the QR code above or enter the UPI ID in your payment app. Please check the recipient details before confirming your payment.</p>
       </div>
 
       <!-- Donation Form -->
@@ -154,9 +206,19 @@
         </div>
         <div class="donate-row">
           <input type="tel"   id="dPhone"  class="form-input" placeholder="Phone Number">
-          <input type="text"  id="dAmount" class="form-input" placeholder="Donation Amount (₹)">
+          <input type="text"  id="dAmount" class="form-input" placeholder="Donation Amount (₹) *" required>
         </div>
+        <div class="donate-row">
+          <input type="date"  id="dDate"   class="form-input" placeholder="Date of Donation *" required>
+          <input type="text"  id="dRef"    class="form-input" placeholder="Transaction Reference Number *" required>
+        </div>
+        <input type="text" id="dPurpose" class="form-input" placeholder="Donation Purpose (if applicable)">
         <textarea id="dMessage" class="form-input" placeholder="Message (Optional)"></textarea>
+
+        <p class="form-inline-note">
+          <i class="fas fa-circle-info"></i>
+          Submitting this form records your donation details. It does not make a payment &mdash; please complete your payment through UPI first.
+        </p>
 
         <div class="captcha-mock">
           <input type="checkbox" id="dRobot">
@@ -167,18 +229,31 @@
           </div>
         </div>
 
-        <button type="submit" class="btn-primary">Submit</button>
+        <div class="donor-declaration">
+          <input type="checkbox" id="dCitizen" required>
+          <label for="dCitizen">I confirm that I am an Indian citizen and that this donation is from my own funds held in my own Indian bank account. *</label>
+        </div>
+
+        <button type="submit" class="btn-primary">Submit Donation Details</button>
       </form>
       <div id="donateSuccess" style="display:none; margin-top:16px; color:green; font-weight:600; text-align:center;">
-        Thank you for your generous donation! We will be in touch soon.
+        Thank you! Your donation details have been recorded and our team will be in touch soon.
       </div>
     </div>
   </section>
 
-  <!-- THANK YOU CUSTOMERS -->
+  <!-- DONATION RECEIPTS -->
+  <section class="contribution-section">
+    <h2>Donation Receipts</h2>
+    <div class="contribution-underline"></div>
+    <p>For receipt requests and donation enquiries, email <a href="mailto:pyrapondy@gmail.com" class="inline-link">pyrapondy@gmail.com</a> or call <a href="tel:+919363312271" class="inline-link">+91 9363312271</a>. Please contact us for current information about applicable tax benefits and the details needed for a receipt.</p>
+  </section>
+
+  <!-- THANK YOU TO OUR DONORS -->
   <section class="thankyou-section">
-    <h2 class="thankyou-title">THANK YOU CUSTOMERS</h2>
+    <h2 class="thankyou-title">THANK YOU DONORS AND WELL WISHERS</h2>
     <div class="thankyou-underline"></div>
+    <p class="thankyou-intro">Your kindness helps us stand beside patients and families when support matters most. Together we are stronger.</p>
     <div class="donors-grid">
       <div class="donor-card">
         <h4>Anu</h4>
@@ -220,6 +295,9 @@
     <div class="footer-grid">
       <div class="footer-logo">
         <img src="images/pyra-removebg-preview.png" alt="PYRA Foundation">
+        <p class="footer-org">PYRA &mdash; Pondicherry Yellow Ribbon Association</p>
+        <p class="footer-tagline">Supporting patients and families through compassion, community participation and practical assistance.</p>
+        <p class="footer-motto">Together we are stronger.</p>
       </div>
       <div class="footer-links">
         <h3>Quick Links</h3>
@@ -227,8 +305,8 @@
           <li><a href="index.html">Home</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="services.html">Our Services</a></li>
-          <li><a href="events.html">Certificates &amp; Events</a></li>
-          <li><a href="contact.html">Contact us</a></li>
+          <li><a href="events.html">Impact Reports &amp; Events</a></li>
+          <li><a href="donate.html">Donate</a></li><li><a href="contact.html">Contact us</a></li>
         </ul>
       </div>
       <div class="footer-contact-col">
@@ -245,7 +323,7 @@
         </div>
       </div>
     </div>
-    <div class="footer-bottom">Copyright &copy; 2024 Pyra Foundation. All rights reserved.</div>
+    <div class="footer-bottom">&copy; 2026 PYRA &mdash; Pondicherry Yellow Ribbon Association. All rights reserved.</div>
   </footer>
 
   <script>
@@ -255,12 +333,19 @@
     var email   = document.getElementById('dEmail').value;
     var phone   = document.getElementById('dPhone').value;
     var amount  = document.getElementById('dAmount').value;
+    var date    = document.getElementById('dDate').value;
+    var ref     = document.getElementById('dRef').value;
+    var purpose = document.getElementById('dPurpose').value;
     var message = document.getElementById('dMessage').value;
     var body    = 'Donor Name: ' + name +
                   '\nEmail: ' + email +
                   '\nPhone: ' + phone +
                   '\nDonation Amount: ₹' + amount +
-                  '\nMessage: ' + message;
+                  '\nDate of Donation: ' + date +
+                  '\nTransaction Reference Number: ' + ref +
+                  '\nDonation Purpose: ' + purpose +
+                  '\nMessage: ' + message +
+                  '\nDeclaration: Donor confirmed Indian citizenship and that the donation is from their own funds held in their own Indian bank account.';
     var subject = 'PYRA Foundation Donation - ' + name;
     window.location.href = 'mailto:pyrapondy@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
     document.getElementById('donateSuccess').style.display = 'block';

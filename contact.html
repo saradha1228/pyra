@@ -23,7 +23,7 @@
       <a href="index.html">Home</a>
       <a href="about.html">About us</a>
       <a href="services.html">Our Services</a>
-      <a href="events.html">Certificate &amp; Events</a>
+      <a href="events.html">Impact Reports &amp; Events</a>
       <a href="contact.html" class="active">Contact us</a>
       <a href="donate.html" class="btn-donate">Donate</a>
     </nav>
@@ -35,6 +35,15 @@
     <div class="banner-shape shape-teal"></div>
     <div class="banner-shape shape-yellow"></div>
     <h1 class="banner-title">Contact us</h1>
+  </section>
+
+  <!-- INTRO -->
+  <section class="section contact-intro-section">
+    <h2 class="section-title">Let Us Make a Difference Together</h2>
+    <div class="section-underline"></div>
+    <p class="services-full-text future-intro">
+      Contact PYRA to request assistance, discuss a donation, volunteer or explore a partnership.
+    </p>
   </section>
 
   <!-- CONTACT LAYOUT -->
@@ -63,6 +72,16 @@
           <p>+91 9363312271</p>
         </div>
       </div>
+
+      <div class="contact-info-item">
+        <div class="contact-icon-wrap">
+          <i class="fas fa-map-marker-alt"></i>
+        </div>
+        <div>
+          <h4>Visit Us</h4>
+          <p>42, Chellapermal Street, Kuyavarpalayam (Kosapalayam), Puducherry &ndash; 605 013.</p>
+        </div>
+      </div>
     </div>
 
     <!-- RIGHT: Contact Form -->
@@ -70,11 +89,20 @@
       <p class="form-tag">GET IN TOUCH</p>
       <h3 class="form-headline">Send A Message</h3>
       <p class="form-note">Fields marked with an * are required</p>
+      <p class="form-helper">Please include your name, contact details and a brief description of your enquiry so that we can respond appropriately.</p>
 
       <form id="contactForm" onsubmit="submitContactForm(event)">
         <input type="text"  id="cName"    class="form-input" placeholder="Name *"    required>
         <input type="email" id="cEmail"   class="form-input" placeholder="Email *"   required>
         <input type="tel"   id="cPhone"   class="form-input" placeholder="Phone">
+        <select id="cType" class="form-input" required>
+          <option value="" disabled selected>Enquiry Type *</option>
+          <option>Request assistance</option>
+          <option>Donation enquiry</option>
+          <option>Volunteering</option>
+          <option>Partnership</option>
+          <option>Other</option>
+        </select>
         <textarea           id="cMessage" class="form-input" placeholder="Message *" required></textarea>
 
         <div class="captcha-mock">
@@ -86,10 +114,10 @@
           </div>
         </div>
 
-        <button type="submit" class="btn-primary">Submit</button>
+        <button type="submit" class="btn-primary">Send Message</button>
       </form>
       <div id="contactSuccess" style="display:none; margin-top:16px; color:green; font-weight:600;">
-        Message sent! Thank you for contacting us.
+        Thank you for contacting PYRA. Your message has been received. Our team will respond as soon as possible.
       </div>
 
       <script>
@@ -98,8 +126,9 @@
         var name    = document.getElementById('cName').value;
         var email   = document.getElementById('cEmail').value;
         var phone   = document.getElementById('cPhone').value;
+        var type    = document.getElementById('cType').value;
         var message = document.getElementById('cMessage').value;
-        var body    = 'Name: ' + name + '\nEmail: ' + email + '\nPhone: ' + phone + '\nMessage: ' + message;
+        var body    = 'Name: ' + name + '\nEmail: ' + email + '\nPhone: ' + phone + '\nEnquiry Type: ' + type + '\nMessage: ' + message;
         var subject = 'PYRA Foundation Contact - ' + name;
         window.location.href = 'mailto:pyrapondy@gmail.com?subject=' + encodeURIComponent(subject) + '&body=' + encodeURIComponent(body);
         document.getElementById('contactSuccess').style.display = 'block';
@@ -116,29 +145,24 @@
     <div class="trustees-underline"></div>
     <div class="trustees-row">
       <div class="trustee-card">
-        <img src="images/20230122_155401_4-1.jpg" alt="Mrs. Ageela Ayappasamy">
-        <h4>Mrs. Ageela Ayappasamy</h4>
+        <img src="images/20230122_155401_4-1.jpg" alt="Mrs. Ageela">
+        <h4>Mrs. Ageela</h4>
         <p>Founder and Managing Trustee</p>
       </div>
       <div class="trustee-card">
-        <img src="images/image3.jpg" alt="Mr. R. Ayappasamy">
-        <h4>Mr. R. Ayappasamy</h4>
-        <p>Managing Director</p>
-      </div>
-      <div class="trustee-card">
-        <img src="images/image2.jpg" alt="Mr. Perumal">
-        <h4>Mr. Perumal</h4>
+        <img src="images/image2.jpg" alt="Mr. Perumal. P">
+        <h4>Mr. Perumal. P</h4>
         <p>Trustee</p>
       </div>
       <div class="trustee-card">
         <img src="images/IMG-20221021-WA0012.jpg" alt="Mr. Leonard">
         <h4>Mr. Leonard</h4>
-        <p>Research Associate of ISBR business school Bangalore<br>Trustee</p>
+        <p>Trustee</p>
       </div>
       <div class="trustee-card">
-        <img src="images/image1.jpg" alt="Dr. Jayanth CA">
-        <h4>Dr. Jayanth CA</h4>
-        <p>Assistant Professor at OP Jindal Global University<br>Trustee</p>
+        <img src="images/image1.jpg" alt="Mr. Reddy sai shiva Jayanth">
+        <h4>Mr. Reddy sai shiva Jayanth</h4>
+        <p>Trustee</p>
       </div>
     </div>
   </section>
@@ -156,6 +180,9 @@
     <div class="footer-grid">
       <div class="footer-logo">
         <img src="images/pyra-removebg-preview.png" alt="PYRA Foundation">
+        <p class="footer-org">PYRA &mdash; Pondicherry Yellow Ribbon Association</p>
+        <p class="footer-tagline">Supporting patients and families through compassion, community participation and practical assistance.</p>
+        <p class="footer-motto">Together we are stronger.</p>
       </div>
       <div class="footer-links">
         <h3>Quick Links</h3>
@@ -163,8 +190,8 @@
           <li><a href="index.html">Home</a></li>
           <li><a href="about.html">About</a></li>
           <li><a href="services.html">Our Services</a></li>
-          <li><a href="events.html">Certificates &amp; Events</a></li>
-          <li><a href="contact.html">Contact us</a></li>
+          <li><a href="events.html">Impact Reports &amp; Events</a></li>
+          <li><a href="donate.html">Donate</a></li><li><a href="contact.html">Contact us</a></li>
         </ul>
       </div>
       <div class="footer-contact-col">
@@ -191,7 +218,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      Copyright &copy; 2024 Pyra Foundation. All rights reserved.
+      &copy; 2026 PYRA &mdash; Pondicherry Yellow Ribbon Association. All rights reserved.
     </div>
   </footer>
 

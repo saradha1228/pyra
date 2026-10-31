@@ -33,6 +33,12 @@
     .admin-header h3{color:var(--red);font-size:22px;font-weight:700}
     .btn-new-folder{background:var(--navy);color:#fff;border:none;padding:9px 18px;border-radius:4px;cursor:pointer;font-size:13px;font-weight:600;display:flex;align-items:center;gap:6px}
     .btn-new-folder:hover{background:#152050}
+    .editor-guide{background:#f4f6fb;border-left:4px solid var(--navy);border-radius:6px;padding:18px 22px;margin-bottom:24px}
+    .editor-guide h4{color:var(--navy);font-size:14px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+    .editor-guide ul{margin:0;padding-left:20px}
+    .editor-guide li{font-size:13px;color:#555;line-height:1.7;margin-bottom:6px}
+    .editor-guide li:last-child{margin-bottom:0}
+    .editor-guide em{color:var(--navy);font-style:normal;font-weight:600}
     .fm-layout{display:grid;grid-template-columns:260px 1fr;border:1px solid #ddd;border-radius:8px;min-height:460px;overflow:hidden}
     .fm-sidebar{background:#f5f6fa;border-right:1px solid #ddd;padding:14px 0}
     .fm-sidebar-title{font-size:11px;color:#999;font-weight:700;letter-spacing:1px;padding:0 16px 12px;text-transform:uppercase}
@@ -79,7 +85,10 @@
     .viewer-close{background:none;border:none;color:#fff;font-size:28px;cursor:pointer}
     .viewer-content{flex:1;display:flex;align-items:center;justify-content:center;width:100%;max-width:960px;padding:0 20px}
     .viewer-content img{max-width:100%;max-height:72vh;border-radius:4px}
-    .viewer-content embed{width:100%;height:72vh;border-radius:4px}
+    .viewer-content iframe{width:100%;height:72vh;border:none;border-radius:4px;background:#fff}
+    .viewer-content{flex-direction:column;gap:12px}
+    .viewer-actions{display:flex;gap:20px;justify-content:center}
+    .viewer-actions a{color:#7ab4ff;font-size:13px;text-decoration:underline}
     .viewer-no-preview{color:#ccc;text-align:center}
     .viewer-no-preview i{font-size:60px;display:block;margin-bottom:14px}
     .viewer-no-preview a{color:#7ab4ff;text-decoration:underline}
@@ -99,7 +108,7 @@
       <a href="index.html">Home</a>
       <a href="about.html">About us</a>
       <a href="services.html">Our Services</a>
-      <a href="events.html">Certificate &amp; Events</a>
+      <a href="events.html">Impact Reports &amp; Events</a>
       <a href="contact.html">Contact us</a>
       <a href="donate.html" class="btn-donate">Donate</a>
     </nav>
@@ -111,7 +120,7 @@
       <div class="login-box">
         <div class="login-logo"><img src="images/cropped-pyra.png" alt="PYRA Logo"></div>
         <h2>Admin Login</h2>
-        <p>Sign in to manage Reports, Folders &amp; Files</p>
+        <p>Sign in to manage Impact Reports, Folders &amp; Files</p>
         <input type="text"     id="adminUser" class="login-field" placeholder="Username">
         <input type="password" id="adminPass" class="login-field" placeholder="Password" onkeydown="if(event.key==='Enter')doLogin()">
         <button class="login-btn" onclick="doLogin()"><i class="fas fa-sign-in-alt"></i> &nbsp;Login</button>
@@ -130,8 +139,19 @@
     <div class="admin-content">
       <div class="admin-header">
         <i class="fas fa-folder-open" style="font-size:26px;color:var(--red)"></i>
-        <h3>Reports Manager</h3>
+        <h3>Impact Reports &amp; Events Manager</h3>
         <button class="btn-new-folder" onclick="openFolderModal()"><i class="fas fa-folder-plus"></i> New Folder</button>
+      </div>
+
+      <div class="editor-guide">
+        <h4><i class="fas fa-circle-info"></i> Publishing guidelines</h4>
+        <ul>
+          <li>Create a folder for each category: Annual Activity Reports, Audited Financial Statements, Registration &amp; Certificates, Events &amp; Community Outreach.</li>
+          <li>Publish a category only once its files are uploaded and open correctly.</li>
+          <li>Name each file with its financial year and title, e.g. <em>2023-24 Annual Activity Report.pdf</em>.</li>
+          <li>Use verified figures only, and obtain consent before publishing identifiable patient photographs or stories.</li>
+          <li>For events, include the date, venue, organiser, activity summary and verified results. Mark planned events clearly so they are distinct from completed activities.</li>
+        </ul>
       </div>
 
       <div class="fm-layout">
@@ -262,24 +282,23 @@
         :`<div class="empty-folder"><i class="fas fa-file-upload"></i>No files yet. Click "Upload File" to add.</div>`);
   }
 
-  function fIco(t){if(t.startsWith('image/'))return'img-i';if(t==='application/pdf')return'pdf-i';if(t.includes('word'))return'doc-i';return'other-i';}
-  function fIcoHtml(t){if(t.startsWith('image/'))return'<i class="fas fa-file-image"></i>';if(t==='application/pdf')return'<i class="fas fa-file-pdf"></i>';if(t.includes('word'))return'<i class="fas fa-file-word"></i>';return'<i class="fas fa-file"></i>';}
+  function fIco(t){t=t||'';if(t.startsWith('image/'))return'img-i';if(t==='application/pdf')return'pdf-i';if(t.includes('word'))return'doc-i';return'other-i';}
+  function fIcoHtml(t){t=t||'';if(t.startsWith('image/'))return'<i class="fas fa-file-image"></i>';if(t==='application/pdf')return'<i class="fas fa-file-pdf"></i>';if(t.includes('word'))return'<i class="fas fa-file-word"></i>';return'<i class="fas fa-file"></i>';}
 
   /* ===== UPLOAD ===== */
   function uploadFiles(event,folderId){
     const files=Array.from(event.target.files);
-    let done=0;
+    if(!files.length)return;
+    const input=event.target;
     const prog=document.getElementById('uploadProgress');
     if(prog)prog.innerHTML=`<p class="upload-progress"><i class="fas fa-spinner fa-spin"></i> Uploading ${files.length} file(s)...</p>`;
-    files.forEach(file=>{
-      const r=new FileReader();
-      r.onload=e=>{
-        const tx=db.transaction('files','readwrite');
-        tx.objectStore('files').add({folderId,name:file.name,type:file.type,size:file.size,data:e.target.result});
-        tx.oncomplete=()=>{done++;if(done===files.length)selectFolder(folderId,activeFolderName);};
-      };
-      r.readAsDataURL(file);
-    });
+    /* Store the file itself (Blob) rather than a base64 data URL:
+       smaller in IndexedDB and renders correctly in the viewer. */
+    const tx=db.transaction('files','readwrite');
+    const store=tx.objectStore('files');
+    files.forEach(file=>store.add({folderId,name:file.name,type:file.type||'application/octet-stream',size:file.size,data:file}));
+    tx.oncomplete=()=>{input.value='';selectFolder(folderId,activeFolderName);};
+    tx.onerror=()=>{if(prog)prog.innerHTML='<p class="upload-progress" style="color:#e74c3c">Upload failed. The file may be too large.</p>';};
   }
 
   /* ===== DELETE ===== */
@@ -321,8 +340,26 @@
   }
 
   /* ===== VIEWER ===== */
+  /* ===== BLOB URL HELPERS (Chrome blocks data: URLs in embed/iframe) ===== */
+  let currentObjUrl=null;
+  function dataURLtoBlob(u){
+    const i=u.indexOf(','), meta=u.slice(0,i), b64=u.slice(i+1);
+    const mime=(meta.match(/:(.*?);/)||[])[1]||'application/octet-stream';
+    const bin=atob(b64), arr=new Uint8Array(bin.length);
+    for(let k=0;k<bin.length;k++)arr[k]=bin.charCodeAt(k);
+    return new Blob([arr],{type:mime});
+  }
+  function releaseObjUrl(){ if(currentObjUrl){URL.revokeObjectURL(currentObjUrl);currentObjUrl=null;} }
+  function fileURL(f){
+    releaseObjUrl();
+    const d=f.data;
+    if(d instanceof Blob){ currentObjUrl=URL.createObjectURL(d); return currentObjUrl; }
+    if(typeof d==='string' && d.startsWith('data:')){ currentObjUrl=URL.createObjectURL(dataURLtoBlob(d)); return currentObjUrl; }
+    return d;
+  }
+
   function openViewer(idx){viewerIdx=idx;showViewerFile();document.getElementById('fileViewer').classList.add('open');}
-  function closeViewer(){document.getElementById('fileViewer').classList.remove('open');document.getElementById('viewerContent').innerHTML='';}
+  function closeViewer(){document.getElementById('fileViewer').classList.remove('open');document.getElementById('viewerContent').innerHTML='';releaseObjUrl();}
   function navigateViewer(dir){viewerIdx=Math.max(0,Math.min(currentFiles.length-1,viewerIdx+dir));showViewerFile();}
   document.getElementById('fileViewer').addEventListener('click',e=>{if(e.target===document.getElementById('fileViewer'))closeViewer();});
 
@@ -333,9 +370,16 @@
     document.getElementById('prevBtn').disabled=viewerIdx===0;
     document.getElementById('nextBtn').disabled=viewerIdx===currentFiles.length-1;
     const c=document.getElementById('viewerContent');
-    if(f.type.startsWith('image/'))c.innerHTML=`<img src="${f.data}" alt="${esc(f.name)}">`;
-    else if(f.type==='application/pdf')c.innerHTML=`<embed src="${f.data}" type="application/pdf">`;
-    else c.innerHTML=`<div class="viewer-no-preview"><i class="fas fa-file"></i><p>Preview not available.</p><a href="${f.data}" download="${esc(f.name)}">Download ${esc(f.name)}</a></div>`;
+    const url=fileURL(f), t=f.type||'', name=esc(f.name);
+    if(t.startsWith('image/')){
+      c.innerHTML=`<img src="${url}" alt="${name}">`;
+    } else if(t==='application/pdf' || /\.pdf$/i.test(f.name)){
+      c.innerHTML=`<iframe src="${url}" title="${name}"></iframe>`+
+        `<div class="viewer-actions"><a href="${url}" target="_blank" rel="noopener">Open in new tab</a>`+
+        `<a href="${url}" download="${name}">Download</a></div>`;
+    } else {
+      c.innerHTML=`<div class="viewer-no-preview"><i class="fas fa-file"></i><p>Preview not available for this file type.</p><a href="${url}" download="${name}">Download ${name}</a></div>`;
+    }
   }
 
   function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
